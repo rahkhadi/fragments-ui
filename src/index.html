@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Fragments UI</title>
-    <link rel="stylesheet" href="https://unpkg.com/bamboo.css" />
-    <script type="module" src="./app.js"></script>
-  </head>
-  <body>
-    <h1>Fragments UI</h1>
-    <section>
-      <nav>
-        <button id="login">Login</button>
-      </nav>
-    </section>
-    <section hidden id="user">
-      <h2>Hello <span class="username"></span>!</h2>
-      <form id="fragment-form">
-        <textarea id="fragment-content" rows="4" cols="50" placeholder="Enter text fragment here..."></textarea><br />
-        <button type="submit">Create Fragment</button>
-      </form>
-      <p id="result"></p>
-      <div id="fragments-list"></div>
-    </section>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <title>Fragments UI</title>
+  <link rel="stylesheet" href="https://unpkg.com/bamboo.css" />
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <h1>Fragments UI</h1>
+  <section>
+    <nav>
+      <button id="login">Login</button>
+    </nav>
+  </section>
+  <section hidden id="user">
+    <h2>Hello <span class="username"></span>!</h2>
+    <form id="fragment-form">
+      <textarea id="fragment-content" rows="4" cols="50" placeholder="Enter fragment content here..."></textarea><br />
+      
+      <label for="fragment-type">Fragment Type:</label>
+      <select id="fragment-type">
+        <option value="text/plain">Plain Text</option>
+        <option value="text/markdown">Markdown</option>
+      </select><br />
+
+      <button type="submit">Create Fragment</button>
+    </form>
+    <p id="result"></p>
+    <div id="fragments-list"></div>
+  </section>
+</body>
 </html>

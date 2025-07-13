@@ -31,7 +31,8 @@ async function init() {
   form.onsubmit = async (e) => {
     e.preventDefault();
     const content = document.querySelector('#fragment-content').value;
-    const response = await createFragment(user, content);
+    const type = document.querySelector('#fragment-type').value; // 🆕 get selected type
+    const response = await createFragment(user, content, type);  // 🆕 pass type
 
     if (response) {
       result.innerText = `✅ Fragment created!\nLocation: ${response.location}\nMetadata: ${JSON.stringify(response.json, null, 2)}`;

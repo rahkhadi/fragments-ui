@@ -12,12 +12,12 @@ export async function getUserFragments(user) {
   }
 }
 
-// ✅ New function to create a fragment
-export async function createFragment(user, content) {
+// ✅ Create fragment with selected content type (plain or markdown)
+export async function createFragment(user, content, type = 'text/plain') {
   try {
     const res = await fetch(`${apiUrl}/v1/fragments`, {
       method: 'POST',
-      headers: user.authorizationHeaders('text/plain'),
+      headers: user.authorizationHeaders(type),
       body: content,
     });
 
