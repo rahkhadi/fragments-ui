@@ -6,6 +6,7 @@ async function init() {
   const loginBtn = document.querySelector('#login');
   const form = document.querySelector('#fragment-form');
   const result = document.querySelector('#result');
+  const fragmentsList = document.querySelector('#fragments-list');
 
   loginBtn.onclick = () => signIn();
 
@@ -16,10 +17,17 @@ async function init() {
   userSection.querySelector('.username').innerText = user.username;
   loginBtn.disabled = true;
 
-  // Optional: fetch existing fragments
-  await getUserFragments(user);
+  // ✅ Fetch existing fragments metadata and render it
+  const fragmentsData = await getUserFragments(user);
+  if (fragmentsData && fragmentsData.fragments) {
+    fragmentsList.innerHTML = '<h3>Your Fragments:</h3>';
+    fragmentsData.fragments.forEach(f => {
+      const item = document.createElement('pre');
+      item.textContent = JSON.stringify(f, null, 2);
+      fragmentsList.appendChild(item);
+    });
+  }
 
-  // ✅ Handle form submit to create fragment
   form.onsubmit = async (e) => {
     e.preventDefault();
     const content = document.querySelector('#fragment-content').value;
