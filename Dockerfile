@@ -5,6 +5,8 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 RUN npx parcel build src/index.html --dist-dir dist
 
 # Stage 2: Serve static files with Nginx
