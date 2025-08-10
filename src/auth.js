@@ -1,33 +1,35 @@
+// REPLACE the file contents with this
 import { UserManager } from 'oidc-client-ts';
 
+const poolId = process.env.VITE_COGNITO_POOL_ID;          // e.g., us-east-1_abc…
+const region = poolId.split('_')[0];
+const authority = `https://cognito-idp.${region}.amazonaws.com/${poolId}`;
+
 const cognitoAuthConfig = {
-  authority: `https://cognito-idp.us-east-1.amazonaws.com/us-east-1_DuKU5EOar`,
-  client_id: `1mbifsbohdbpf38vp7dbfdfqrt`,
-  redirect_uri: `http://localhost:8081`,
+  authority,
+  client_id: process.env.VITE_COGNITO_CLIENT_ID,
+  redirect_uri: process.env.VITE_COGNITO_REDIRECT_URI,
   response_type: 'code',
-  scope: 'phone openid email',
+  scope: 'openid email phone',
   revokeTokenTypes: ['refresh_token'],
   automaticSilentRenew: false,
 };
 
-const userManager = new UserManager({
-  ...cognitoAuthConfig,
-});
+const userManager = new UserManager(cognitoAuthConfig);
 
 export async function signIn() {
   await userManager.signinRedirect();
 }
 
 function formatUser(user) {
-  console.log('User Authenticated', { user });
   return {
-    username: user.profile['cognito:username'],
+    username: user.profile['cognito:username'] || user.profile.username,
     email: user.profile.email,
-    idToken: user.id_token,
-    accessToken: user.access_token,
+    idToken: user.id_token,                // for API auth
+    accessToken: user.access_token,        // (keep if you need it elsewhere)
     authorizationHeaders: (type = 'application/json') => ({
       'Content-Type': type,
-      Authorization: `Bearer ${user.id_token}`,
+      Authorization: `Bearer ${user.id_token}`, // send ID token
     }),
   };
 }
@@ -38,7 +40,6 @@ export async function getUser() {
     window.history.replaceState({}, document.title, window.location.pathname);
     return formatUser(user);
   }
-
   const user = await userManager.getUser();
   return user ? formatUser(user) : null;
 }
